@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <h2>重いコンポーネントがある場合</h2>
       <div>
-        checkItemsを更新するたびにHeavyComponentも再レンダリングされるため非常に重い
+        条件を更新するたびに重いコンポーネントも再レンダリングされるため非常に重い
       </div>
       {[1, 2, 3].map((number) => (
         <CheckBox
