@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, memo, useState } from "react";
+import { memo, useState } from "react";
 
 export default function Page() {
   const [formState, setFormState] = useState<{
@@ -18,12 +18,6 @@ export default function Page() {
     }
     setFormState(temp);
     setMessage(temp.checkItems.join(","));
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const temp = { ...formState };
-    temp.text = e.target.value;
-    setFormState(temp);
   };
 
   return (
@@ -45,8 +39,6 @@ export default function Page() {
       <br />
       <div>検索条件：{message}</div>
       <div className="space-70" />
-      非常に重いコンポーネントのテキスト：
-      <input type="text" value={formState.text} onChange={handleChange} />
       <MemoHeavyComponent text={formState.text} />
     </>
   );
