@@ -19,8 +19,10 @@ export default function Home() {
 
   return (
     <>
-      <h2>デフォルトの状態</h2>
-      <div>重いコンポーネントもないのでmemoを使わなくてもサクサク動く</div>
+      <h2>重いコンポーネントがある場合</h2>
+      <div>
+        checkItemsを更新するたびにHeavyComponentも再レンダリングされるため非常に重い
+      </div>
       {[1, 2, 3].map((number) => (
         <CheckBox
           key={number}
@@ -33,7 +35,7 @@ export default function Home() {
       ))}
       <br />
       <div>検索条件：{message}</div>
-      <br />
+      <HeavyComponent />
     </>
   );
 }
@@ -56,6 +58,26 @@ const CheckBox = ({ children, checked, value, toggle }: CheckBoxProps) => {
       >
         <span>{children}</span>
       </label>
+    </div>
+  );
+};
+
+const HeavyComponent = () => {
+  // 非常に重い計算を行う
+  const calculateSum = () => {
+    let sum = 0;
+    for (let i = 0; i < 1000000000; i++) {
+      sum += i;
+    }
+    return sum;
+  };
+
+  const result = calculateSum();
+
+  return (
+    <div>
+      <h2>非常に重い計算を行うコンポーネント</h2>
+      <p>計算結果: {result}</p>
     </div>
   );
 };
