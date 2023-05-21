@@ -1,32 +1,41 @@
 "use client";
 
-import { memo, useState } from "react";
+import { ChangeEvent, memo, useState } from "react";
 
 export default function Page() {
-  const [checkItems, setCheckItems] = useState<string[]>([]);
+  const [formState, setFormState] = useState<{
+    checkItems: string[];
+    text: string;
+  }>({ checkItems: [], text: "テキスト" });
   const [message, setMessage] = useState("");
   const toggle = (value: string) => {
-    const result = [...checkItems];
-    if (checkItems.includes(value)) {
-      const index = checkItems.indexOf(value);
-      result.splice(index, 1);
+    const temp = { ...formState };
+    if (temp.checkItems.includes(value)) {
+      const index = temp.checkItems.indexOf(value);
+      temp.checkItems.splice(index, 1);
     } else {
-      result.push(value);
+      temp.checkItems.push(value);
     }
-    setCheckItems(result);
-    setMessage(result.join(","));
+    setFormState(temp);
+    setMessage(temp.checkItems.join(","));
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const temp = { ...formState };
+    temp.text = e.target.value;
+    setFormState(temp);
   };
 
   return (
     <>
       <h2>重いコンポーネントとのレンダリングを分けるのが難しい場合</h2>
       <div>
-        checkItemsを更新するたびにHeavyComponentも再レンダリングされるため非常に重い
+        同じStateを共有していてコンポーネントを分けるのが難しい場合は、memoを使用すると余計な再レンダリングを防ぐことができる
       </div>
       {[1, 2, 3].map((number) => (
         <CheckBox
           key={number}
-          checked={checkItems.includes(`value${number}`)}
+          checked={formState.checkItems.includes(`value${number}`)}
           value={`value${number}`}
           toggle={toggle}
         >
@@ -35,7 +44,10 @@ export default function Page() {
       ))}
       <br />
       <div>検索条件：{message}</div>
-      <MemoHeavyComponent />
+      <div className="space-70" />
+      非常に重いコンポーネントのテキスト：
+      <input type="text" value={formState.text} onChange={handleChange} />
+      <MemoHeavyComponent text={formState.text} />
     </>
   );
 }
@@ -62,7 +74,11 @@ const CheckBox = ({ children, checked, value, toggle }: CheckBoxProps) => {
   );
 };
 
-const HeavyComponent = () => {
+type HeavyComponentProps = {
+  text: string;
+};
+
+const HeavyComponent = ({ text }: HeavyComponentProps) => {
   // 非常に重い計算を行う
   const calculateSum = () => {
     let sum = 0;
@@ -78,6 +94,7 @@ const HeavyComponent = () => {
     <div>
       <h2>非常に重い計算を行うコンポーネント</h2>
       <p>計算結果: {result}</p>
+      <div>{text}</div>
     </div>
   );
 };
