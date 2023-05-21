@@ -99,7 +99,7 @@
 .center::after {
   position: absolute;
   left: 50%;
-  content: '';
+  content: "";
   filter: blur(45px);
   transform: translateZ(0);
 }
