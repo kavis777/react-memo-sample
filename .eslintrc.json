@@ -1,3 +1,25 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next/core-web-vitals", // デフォルト設定
+    "eslint:recommended", // eslint推奨ルール設定
+    "plugin:@typescript-eslint/recommended", // typescript-eslintの推奨ルール設定
+    "prettier" // Prettierとの競合ルールをOFFにする
+  ],
+  "ignorePatterns": ["*.config.js", "*.config.*.js", "*.setup.js"],
+  "plugins": ["simple-import-sort", "import", "unused-imports"],
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2020": true // Next.js13時点でES2020まで対応済 https://nextjs.org/docs/basic-features/supported-browsers-features#javascript-language-features
+  },
+  "rules": {
+    "simple-import-sort/imports": "error", // importのsortルールを設定
+    "simple-import-sort/exports": "error", // exportのsortルールを設定
+    "import/first": "error", // すべてのimportがファイルの先頭にあることを確認
+    "import/newline-after-import": "error", // import後に改行があることを確認
+    "import/no-duplicates": "error", // 同じファイルのimportをマージ
+    "unused-imports/no-unused-imports": "error", // 未使用のimport文を削除
+    "react/no-unknown-property": ["error", { "ignore": ["jsx", "global"] }] // styled-jsxを扱う際に使うprops（jsxとglobal）を無視する
+  }
 }
