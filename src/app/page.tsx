@@ -17,14 +17,10 @@ export default function Home() {
     setMessage(result.join(","));
   };
 
-  // 1から100までの数値を持つ配列
-  // [1, 2, 3, ..., 10]
-  const array = Array.from({ length: 10 }, (_, index) => index + 1);
-
   return (
     <>
       <h2>React memoを使わない場合</h2>
-      {array.map((number) => (
+      {[1, 2, 3].map((number) => (
         <CheckBox
           key={number}
           checked={checkItems.includes(`value${number}`)}
@@ -36,7 +32,7 @@ export default function Home() {
       ))}
       <br />
       <div>検索条件：{message}</div>
-      <div></div>
+      <HeavyComponent />
     </>
   );
 }
@@ -59,6 +55,26 @@ const CheckBox = ({ children, checked, value, toggle }: CheckBoxProps) => {
       >
         <span>{children}</span>
       </label>
+    </div>
+  );
+};
+
+const HeavyComponent = () => {
+  // 非常に重い計算や処理を行う
+  const calculateSum = () => {
+    let sum = 0;
+    for (let i = 0; i < 1000000000; i++) {
+      sum += i;
+    }
+    return sum;
+  };
+
+  const result = calculateSum();
+
+  return (
+    <div>
+      <h2>非常に重い計算や処理を行うコンポーネント</h2>
+      <p>計算結果: {result}</p>
     </div>
   );
 };
