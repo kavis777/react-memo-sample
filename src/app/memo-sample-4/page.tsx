@@ -20,8 +20,9 @@ export default function Page() {
     setMessage(temp.checkItems.join(","));
   };
 
-  // 何らかの処理をして最終的にUserオブジェクトを生成する
-  const doSomething = useMemo(() => ({ name: "ユーザー", age: 22 }), []);
+  // 何らかの処理をして最終的に文字列の配列を生成する
+  const doSomething = () => ["テキスト1", "テキスト2", "テキスト3"];
+  const memoTexts = useMemo(() => doSomething(), []);
 
   return (
     <>
@@ -44,7 +45,7 @@ export default function Page() {
       <br />
       <div>検索条件：{message}</div>
       <div className="space-70" />
-      <MemoHeavyComponent user={doSomething} />
+      <MemoHeavyComponent texts={memoTexts} />
     </>
   );
 }
@@ -71,16 +72,11 @@ const CheckBox = ({ children, checked, value, toggle }: CheckBoxProps) => {
   );
 };
 
-type User = {
-  name: string;
-  age: number;
-};
-
 type HeavyComponentProps = {
-  user: User;
+  texts: string[];
 };
 
-const HeavyComponent = ({ user }: HeavyComponentProps) => {
+const HeavyComponent = ({ texts }: HeavyComponentProps) => {
   // 非常に重い計算を行う
   const calculateSum = () => {
     let sum = 0;
@@ -96,9 +92,9 @@ const HeavyComponent = ({ user }: HeavyComponentProps) => {
     <div>
       <h2>非常に重い計算を行うコンポーネント</h2>
       <p>計算結果: {result}</p>
-      <p>
-        {user.name} ({user.age})
-      </p>
+      {texts.map((text, index) => (
+        <div key={index}>{text}</div>
+      ))}
     </div>
   );
 };
