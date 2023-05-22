@@ -30,6 +30,12 @@ export default function RootLayout({
         <Link className={style["link"]} href="/memo-sample-3">
           重いコンポーネントとのレンダリングを分けるのが難しい場合
         </Link>
+        <Link className={style["link"]} href="/memo-sample-4">
+          レンダリングが重いコンポーネントにオブジェクトや配列を渡す場合
+        </Link>
+        <Link className={style["link"]} href="/memo-sample-5">
+          レンダリングが重いコンポーネントに関数を渡す場合
+        </Link>
       </body>
     </html>
   );

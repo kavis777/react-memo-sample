@@ -1,6 +1,6 @@
 "use client";
 
-import React, { memo, useMemo, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 
 export default function Page() {
   const [formState, setFormState] = useState<{
@@ -22,11 +22,11 @@ export default function Page() {
 
   // 何らかの処理をして最終的に文字列の配列を生成する
   const doSomething = () => ["テキスト1", "テキスト2", "テキスト3"];
-  const memoTexts = useMemo(() => doSomething(), []);
+  const memoDoSomething = useCallback(doSomething, []);
 
   return (
     <>
-      <h2>レンダリングが重いコンポーネントにオブジェクトや配列を渡す場合</h2>
+      <h2>レンダリングが重いコンポーネントに関数を渡す場合</h2>
       <div>
         同じStateを共有していてコンポーネントを分けるのが難しい場合は、memoを使用すると余計な再レンダリングを防ぐことができる
       </div>
@@ -43,7 +43,7 @@ export default function Page() {
       <br />
       <div>検索条件：{message}</div>
       <div className="space-70" />
-      <MemoHeavyComponent texts={memoTexts} />
+      <MemoHeavyComponent doSomething={memoDoSomething} />
     </>
   );
 }
@@ -71,10 +71,10 @@ const CheckBox = ({ children, checked, value, toggle }: CheckBoxProps) => {
 };
 
 type HeavyComponentProps = {
-  texts: string[];
+  doSomething: () => string[];
 };
 
-const HeavyComponent = ({ texts }: HeavyComponentProps) => {
+const HeavyComponent = ({ doSomething }: HeavyComponentProps) => {
   // 非常に重い計算を行う
   const calculateSum = () => {
     let sum = 0;
@@ -90,7 +90,7 @@ const HeavyComponent = ({ texts }: HeavyComponentProps) => {
     <div>
       <h2>非常に重い計算を行うコンポーネント</h2>
       <p>計算結果: {result}</p>
-      {texts.map((text, index) => (
+      {doSomething().map((text, index) => (
         <div key={index}>{text}</div>
       ))}
     </div>
